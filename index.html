@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Cipher | Mastermind Deduction</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="game-header">
+        <h1>Project Cipher</h1>
+        <div class="header-controls">
+            <button id="theme-toggle" class="btn secondary">Toggle Theme</button>
+            <button id="leaderboard-btn" class="btn secondary">Leaderboard</button>
+        </div>
+    </header>
+
+    <main class="game-container">
+        <div id="core-game-ui" class="hidden">
+            <section class="status-bar">
+                <div class="timer-wrapper">
+                    <svg class="timer-svg" viewBox="0 0 100 100">
+                        <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                        <circle class="timer-progress" id="timer-arc" cx="50" cy="50" r="45"></circle>
+                    </svg>
+                    <span id="time-display">00:00</span>
+                </div>
+                <div class="guess-tracker">
+                    Guesses Left: <span id="guesses-left">10</span>
+                </div>
+            </section>
+
+            <section id="secret-code-reveal" class="secret-row hidden" aria-hidden="true"></section>
+
+            <section id="game-board" class="board" aria-live="polite"></section>
+
+            <section class="interaction-area">
+                <div id="color-palette" class="palette" role="radiogroup" aria-label="Color Palette"></div>
+                <div class="action-buttons">
+                    <button id="give-up-btn" class="btn secondary">Give Up</button>
+                    <button id="submit-guess" class="btn primary" disabled>Submit Guess</button>
+                    <button id="play-again-inline" class="btn primary hidden" style="width: 100%;">Play Again</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <dialog id="welcome-modal" class="modal" open>
+        <div class="modal-content">
+            <h2>Project Cipher</h2>
+
+            <div class="rules-container">
+                <p style="margin-bottom: 0.5rem;"><strong>Mission:</strong> Deduce the secret color sequence before time
+                    or guesses run out. <em>Colors may repeat!</em></p>
+                <ul>
+                    <li>⚫ <strong>Black Peg:</strong> Exact match (Right color, right slot)</li>
+                    <li>⚪ <strong>White Peg:</strong> Partial match (Right color, wrong slot)</li>
+                </ul>
+            </div>
+
+            <label for="initial-difficulty" style="font-weight: 600; text-align: left;">Select Difficulty:</label>
+            <select id="initial-difficulty" class="modal-select">
+                <option value="easy">Easy (4 Slots, 8 Guesses, 5 min)</option>
+                <option value="medium" selected>Medium (5 Slots, 10 Guesses, 4 min)</option>
+                <option value="hard">Hard (6 Slots, 12 Guesses, 3 min)</option>
+            </select>
+
+            <button id="start-game-btn" class="btn primary" style="width: 100%; margin-top: 0.5rem;">Initialize
+                Sequence</button>
+        </div>
+    </dialog>
+
+    <dialog id="game-over-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Game Over</h2>
+            <p id="modal-message"></p>
+            <p id="modal-stats" class="stats-text"></p>
+
+            <div id="score-input-section" class="score-form hidden">
+                <label for="player-name">🎉 New High Score!</label>
+                <div class="input-group">
+                    <input type="text" id="player-name" placeholder="Enter Your Name" maxlength="12" autocomplete="off">
+                    <button id="save-score" class="btn primary">Save</button>
+                </div>
+            </div>
+
+            <div class="modal-actions" id="modal-restart-container">
+                <button id="restart-game" class="btn secondary">Close & Review Board</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="leaderboard-modal" class="modal">
+        <div class="modal-content">
+            <h2>Global Leaderboard</h2>
+            <div class="leaderboard-tabs" role="tablist">
+                <button class="tab-btn" data-tier="easy" role="tab" aria-selected="false">Easy</button>
+                <button class="tab-btn active" data-tier="medium" role="tab" aria-selected="true">Medium</button>
+                <button class="tab-btn" data-tier="hard" role="tab" aria-selected="false">Hard</button>
+            </div>
+            <ol id="leaderboard-list" class="leaderboard-list"></ol>
+
+            <div class="modal-actions multi-action">
+                <button id="close-leaderboard" class="btn secondary">Close</button>
+                <button id="leaderboard-restart" class="btn primary">New Game</button>
+            </div>
+        </div>
+    </dialog>
+
+    <canvas id="confetti-canvas" class="pointer-events-none" aria-hidden="true"></canvas>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
